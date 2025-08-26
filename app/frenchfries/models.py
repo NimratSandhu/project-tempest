@@ -8,15 +8,11 @@ from mongoengine import (
 )
 
 
-class Restaurant(Document):
-    name = StringField(required=True)
-
-
 class Promo(Document):
     # Long term, reccuring, ie weekly promo
     description = StringField(required=True)
     active = BooleanField(required=True)
-    restuarant = ReferenceField(Restaurant)
+    restaurant = StringField(required=True)
     day_of_week = StringField(
         choices=[
             "Monday",
@@ -35,4 +31,4 @@ class Offer(Document):
     description = StringField(required=True)
     active = BooleanField(required=True)
     expiration_date = DateField(required=True)
-    restuarant = ReferenceField(Restaurant)
+    restaurant = StringField(required=True)
