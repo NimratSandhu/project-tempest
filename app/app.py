@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from mongoengine import connect
 from config import Config
-from frenchfries.models import Offer, Promo, Restaurant
+from frenchfries.models import Offer, Promo
 import datetime
 
 
@@ -15,25 +15,6 @@ connect(**app.config["MONGODB_SETTINGS"])
 def create_offer():
     data = request.json
     print("Request received", data)
-
-    # 1. Get or Create Restaurant
-    restaurant_name = data.get(
-        "restaurant"
-    )  # Assuming 'restaurant_name' is sent in the request
-    if not restaurant_name:
-        return jsonify({"Error": "Restaurant name is required."}), 400
-
-    # Try to find an existing restaurant by name
-    # If not found, create a new one.
-    try:
-        restaurant, created = Restaurant.objects.get_or_create(name=restaurant_name)
-        if created:
-            print(f"Created new restaurant: {restaurant.name}")
-        else:
-            print(f"Linked existing restaurant: {restaurant.name}")
-    except Exception as e:
-        return jsonify({"Error": f"Failed to get or create restaurant: {str(e)}"}), 500
-
     # Create the Offer
     try:
         expiration_date_str = data.get("expiration_date")
@@ -48,13 +29,13 @@ def create_offer():
             description=data["description"],
             active=data.get("active", True),
             expiration_date=expiration_date,
-            restaurant=restaurant,
+            restaurant=data.get("restaurant")
         )
         offer.save()
         return (
             jsonify(
                 {
-                    "Message": f"Created offer '{offer.description}' for restaurant '{offer.restaurant.name}'",
+                    "Message": f"Created offer '{offer.description}' for restaurant '{offer.restaurant}'",
                     "offer_id": str(offer.id),
                 }
             ),
@@ -69,30 +50,12 @@ def create_promo():
     data = request.json
     print("Request received", data)
 
-    # 1. Get or Create Restaurant
-    restaurant_name = data.get("restaurant_name")
-    if not restaurant_name:
-        return jsonify({"Error": "Restaurant name is required."}), 400
-
-    try:
-        restaurant, created = Restaurant.objects.get_or_create(name=restaurant_name)
-        if created:
-            print(f"Created new restaurant: {restaurant.name}")
-        else:
-            print(f"Linked existing restaurant: {restaurant.name}")
-    except Exception as e:
-        return jsonify({"Error": f"Failed to get or create restaurant: {str(e)}"}), 500
-
-    # 2. Validate and Create the Promo
     try:
         promo_description = data.get("description")
         day_of_week = data.get("day_of_week")
         active_status = data.get("active", True)
+        restaurant = data.get("restaurant")
 
-        if not promo_description:
-            return jsonify({"Error": "Promo description is required."}), 400
-        if not day_of_week:
-            return jsonify({"Error": "Day of week is required."}), 400
         promo = Promo(
             description=promo_description,
             active=active_status,
@@ -103,7 +66,7 @@ def create_promo():
         return (
             jsonify(
                 {
-                    "Message": f"Created promo '{promo.description}' for restaurant '{promo.restaurant.name}' on {promo.day_of_week}",
+                    "Message": f"Created promo '{promo.description}' for restaurant '{promo.restaurant}' on {promo.day_of_week}",
                     "promo_id": str(promo.id),
                 }
             ),
@@ -124,7 +87,7 @@ def list_offers():
                 "description": offer.description,
                 "active": offer.active,
                 "expiration_date": offer.expiration_date.strftime("%Y-%m-%d"),
-                "restaurant_name": offer.restaurant.name,
+                "restaurant_name": offer.restaurant,
             }
         )
 
@@ -142,7 +105,7 @@ def list_promos():
                 "description": promo.description,
                 "active": promo.active,
                 "day_of_week": promo.day_of_week,
-                "restaurant": promo.restaurant.name,
+                "restaurant": promo.restaurant,
             }
         )
 
