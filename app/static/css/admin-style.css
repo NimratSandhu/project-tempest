@@ -1,0 +1,12 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+#offerForm {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#responseMsg {
+  font-weight: bold;
+}
