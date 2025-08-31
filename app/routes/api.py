@@ -1,17 +1,12 @@
-from flask import Flask, request, jsonify
-from mongoengine import connect
-from config import Config
-from frenchfries.models import Offer, Promo
+
+from flask import Blueprint, jsonify, request
 import datetime
+from app.models import Offer, Promo
+
+api_bp = Blueprint('api', __name__)
 
 
-app = Flask(__name__)
-app.config.from_object(Config)
-
-connect(**app.config["MONGODB_SETTINGS"])
-
-
-@app.route("/offers", methods=["POST"])
+@api_bp.route("/offers", methods=["POST"])
 def create_offer():
     data = request.json
     print("Request received", data)
@@ -45,7 +40,7 @@ def create_offer():
         return jsonify({"Error": f"Failed to create offer: {str(e)}"}), 400
 
 
-@app.route("/promos", methods=["POST"])
+@api_bp.route("/promos", methods=["POST"])
 def create_promo():
     data = request.json
     print("Request received", data)
@@ -76,7 +71,7 @@ def create_promo():
         return jsonify({"Error": f"Failed to create promo: {str(e)}"}), 400
 
 
-@app.route("/offers", methods=["GET"])
+@api_bp.route("/offers", methods=["GET"])
 def list_offers():
     all_offers = Offer.objects()
     offers_list = []
@@ -94,7 +89,7 @@ def list_offers():
     return jsonify(offers_list), 200
 
 
-@app.route("/promos", methods=["GET"])
+@api_bp.route("/promos", methods=["GET"])
 def list_promos():
     all_promos = Promo.objects()
     promos_list = []
@@ -109,6 +104,3 @@ def list_promos():
             }
         )
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
