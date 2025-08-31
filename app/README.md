@@ -13,7 +13,7 @@ docker run -d -p 27017:27017 --name mongo mongo:latest
 
 Launch app
 ```bash
-python app.py
+python run.py
 ```
 
 Send POST Request to add to db
@@ -45,6 +45,11 @@ curl -X POST http://127.0.0.1:5000/offers \
 Send GET Request to view items in db
 ```bash
 curl -X GET http://127.0.0.1:5000/offers
+```
+
+See the frontend app, Enter this into your browser
+```bash
+http://127.0.0.1:5000/
 ```
 
 To connect to the Mongo Db use
