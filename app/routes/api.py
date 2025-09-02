@@ -104,3 +104,5 @@ def list_promos():
             }
         )
 
+    return jsonify(promos_list), 200
+
