@@ -106,3 +106,33 @@ def list_promos():
 
     return jsonify(promos_list), 200
 
+@api_bp.route("/deactivate_offer", methods=["POST"])
+def deactivate_offer():
+    data = request.json
+    offer_id = data.get("id")
+    if not offer_id:
+        return jsonify({"Error": "Offer ID is required."}), 400
+
+    try:
+        offer = Offer.objects.get(id=offer_id)
+        offer.active = False
+        offer.save()
+        return jsonify({"Message": f"Offer '{offer.description}' has been deactivated."}), 200
+    except Exception as e:
+        return jsonify({"Error": f"Failed to deactivate offer: {str(e)}"}), 400
+
+
+@api_bp.route("/deactivate_promo", methods=["POST"])
+def deactivate_promo():
+    data = request.json
+    promo_id = data.get("id")
+    if not promo_id:
+        return jsonify({"Error": "Promo ID is required."}), 400
+
+    try:
+        promo = Promo.objects.get(id=promo_id)
+        promo.active = False
+        promo.save()
+        return jsonify({"Message": f"Promo '{promo.description}' has been deactivated."}), 200
+    except Exception as e:
+        return jsonify({"Error": f"Failed to deactivate promo: {str(e)}"}), 400
