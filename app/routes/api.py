@@ -76,15 +76,16 @@ def list_offers():
     all_offers = Offer.objects()
     offers_list = []
     for offer in all_offers:
-        offers_list.append(
-            {
-                "id": str(offer.id),  # Convert ObjectId to a string
-                "description": offer.description,
-                "active": offer.active,
-                "expiration_date": offer.expiration_date.strftime("%Y-%m-%d"),
-                "restaurant_name": offer.restaurant,
-            }
-        )
+        if offer.active:
+            offers_list.append(
+                {
+                    "id": str(offer.id),  # Convert ObjectId to a string
+                    "description": offer.description,
+                    "active": offer.active,
+                    "expiration_date": offer.expiration_date.strftime("%Y-%m-%d"),
+                    "restaurant_name": offer.restaurant,
+                }
+            )
 
     return jsonify(offers_list), 200
 
