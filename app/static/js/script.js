@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         card.innerHTML = `
           <h2>${offer.restaurant_name}</h2>
           <p>${offer.description}</p>
+          <p>${offer.id}</p>
           <p class="expiration">Expires: ${offer.expiration_date}</p>
         `;
 

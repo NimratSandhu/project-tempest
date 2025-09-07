@@ -92,4 +92,82 @@ document.addEventListener("DOMContentLoaded", () => {
       responseMsg.textContent = "Failed to add promo.";
     });
   });
+
+  const deactivateOfferBtn = document.getElementById("deactivateOfferBtn");
+  const deactivateOfferForm = document.getElementById("deactivateOfferForm");
+  const cancelDeactivateOfferBtn = document.getElementById("cancelDeactivateOfferBtn");
+  const deactivateOfferFormElem = document.getElementById("deactivateOfferFormElem");
+
+  deactivateOfferBtn.addEventListener("click", () => {
+    deactivateOfferForm.classList.remove("d-none");
+    deactivateOfferBtn.classList.add("d-none");
+  });
+
+  cancelDeactivateOfferBtn.addEventListener("click", () => {
+    deactivateOfferForm.classList.add("d-none");
+    deactivateOfferBtn.classList.remove("d-none");
+    deactivateOfferFormElem.reset();
+    responseMsg.textContent = "";
+  });
+
+  deactivateOfferFormElem.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const id = document.getElementById("deactivate_offer_id").value;
+
+    fetch("http://127.0.0.1:5000/deactivate_offer", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id })
+    })
+    .then(response => response.json())
+    .then(result => {
+      responseMsg.style.color = "green";
+      responseMsg.textContent = "Offer deactivated successfully!";
+      deactivateOfferFormElem.reset();
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      responseMsg.style.color = "red";
+      responseMsg.textContent = "Failed to deactivate offer.";
+    });
+  });
+
+  const deactivatePromoBtn = document.getElementById("deactivatePromoBtn");
+  const deactivatePromoForm = document.getElementById("deactivatePromoForm");
+  const cancelDeactivatePromoBtn = document.getElementById("cancelDeactivatePromoBtn");
+  const deactivatePromoFormElem = document.getElementById("deactivatePromoFormElem");
+
+  deactivatePromoBtn.addEventListener("click", () => {
+    deactivatePromoForm.classList.remove("d-none");
+    deactivatePromoBtn.classList.add("d-none");
+  });
+
+  cancelDeactivatePromoBtn.addEventListener("click", () => {
+    deactivatePromoForm.classList.add("d-none");
+    deactivatePromoBtn.classList.remove("d-none");
+    deactivatePromoFormElem.reset();
+    responseMsg.textContent = "";
+  });
+
+  deactivatePromoFormElem.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const id = document.getElementById("deactivate_promo_id").value;
+
+    fetch("http://127.0.0.1:5000/deactivate_promo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id })
+    })
+    .then(response => response.json())
+    .then(result => {
+      responseMsg.style.color = "green";
+      responseMsg.textContent = "Promo deactivated successfully!";
+      deactivatePromoFormElem.reset();
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      responseMsg.style.color = "red";
+      responseMsg.textContent = "Failed to deactivate promo.";
+    });
+  });
 });

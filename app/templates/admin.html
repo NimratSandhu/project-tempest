@@ -81,6 +81,38 @@
       <button type="button" id="cancelPromoBtn" class="btn btn-secondary ms-2">Cancel</button>
     </form>
   </div>
+
+  <!-- Deactivate Offer -->
+  <div class="d-flex justify-content-center mb-4">
+    <button id="deactivateOfferBtn" class="btn btn-danger btn-lg">Deactivate Offer</button>
+  </div>
+  <div id="deactivateOfferForm" class="card shadow p-4 d-none">
+    <h4 class="mb-3">Deactivate an Offer</h4>
+    <form id="deactivateOfferFormElem">
+      <div class="mb-3">
+        <label for="deactivate_offer_id" class="form-label">Offer ID</label>
+        <input type="text" class="form-control" id="deactivate_offer_id" required>
+      </div>
+      <button type="submit" class="btn btn-danger">Deactivate</button>
+      <button type="button" id="cancelDeactivateOfferBtn" class="btn btn-secondary ms-2">Cancel</button>
+    </form>
+  </div>
+
+  <!-- Deactivate Promo -->
+  <div class="d-flex justify-content-center mb-4">
+    <button id="deactivatePromoBtn" class="btn btn-danger btn-lg">Deactivate Promo</button>
+  </div>
+  <div id="deactivatePromoForm" class="card shadow p-4 d-none">
+    <h4 class="mb-3">Deactivate a Promo</h4>
+    <form id="deactivatePromoFormElem">
+      <div class="mb-3">
+        <label for="deactivate_promo_id" class="form-label">Promo ID</label>
+        <input type="text" class="form-control" id="deactivate_promo_id" required>
+      </div>
+      <button type="submit" class="btn btn-danger">Deactivate</button>
+      <button type="button" id="cancelDeactivatePromoBtn" class="btn btn-secondary ms-2">Cancel</button>
+    </form>
+  </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
