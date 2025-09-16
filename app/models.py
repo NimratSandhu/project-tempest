@@ -32,3 +32,11 @@ class Offer(Document):
     active = BooleanField(required=True)
     expiration_date = DateField(required=True)
     restaurant = StringField(required=True)
+
+
+# User model
+class User(Document):
+    username = StringField(required=True, unique=True)
+    active = BooleanField(required=True, default=True)
+    country = StringField(required=True)
+    state = StringField(required=True)

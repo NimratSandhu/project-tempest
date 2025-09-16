@@ -170,4 +170,88 @@ document.addEventListener("DOMContentLoaded", () => {
       responseMsg.textContent = "Failed to deactivate promo.";
     });
   });
+
+  const openUserFormBtn = document.getElementById("openUserFormBtn");
+  const userForm = document.getElementById("userForm");
+  const cancelUserBtn = document.getElementById("cancelUserBtn");
+  const addUserForm = document.getElementById("addUserForm");
+
+  openUserFormBtn.addEventListener("click", () => {
+    userForm.classList.remove("d-none");
+    openUserFormBtn.classList.add("d-none");
+  });
+
+  cancelUserBtn.addEventListener("click", () => {
+    userForm.classList.add("d-none");
+    openUserFormBtn.classList.remove("d-none");
+    addUserForm.reset();
+    responseMsg.textContent = "";
+  });
+
+  addUserForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const data = {
+      username: document.getElementById("username").value,
+      country: document.getElementById("country").value,
+      state: document.getElementById("state").value,
+      active: document.getElementById("user_active").checked
+    };
+
+    fetch("http://127.0.0.1:5000/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+      responseMsg.style.color = "green";
+      responseMsg.textContent = "User added successfully!";
+      addUserForm.reset();
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      responseMsg.style.color = "red";
+      responseMsg.textContent = "Failed to add user.";
+    });
+  });
+
+  const deactivateUserBtn = document.getElementById("deactivateUserBtn");
+  const deactivateUserForm = document.getElementById("deactivateUserForm");
+  const cancelDeactivateUserBtn = document.getElementById("cancelDeactivateUserBtn");
+  const deactivateUserFormElem = document.getElementById("deactivateUserFormElem");
+
+  deactivateUserBtn.addEventListener("click", () => {
+    deactivateUserForm.classList.remove("d-none");
+    deactivateUserBtn.classList.add("d-none");
+  });
+
+  cancelDeactivateUserBtn.addEventListener("click", () => {
+    deactivateUserForm.classList.add("d-none");
+    deactivateUserBtn.classList.remove("d-none");
+    deactivateUserFormElem.reset();
+    responseMsg.textContent = "";
+  });
+
+  deactivateUserFormElem.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const id = document.getElementById("deactivate_user_id").value;
+
+    fetch("http://127.0.0.1:5000/deactivate_user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id })
+    })
+    .then(response => response.json())
+    .then(result => {
+      responseMsg.style.color = "green";
+      responseMsg.textContent = "User deactivated successfully!";
+      deactivateUserFormElem.reset();
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      responseMsg.style.color = "red";
+      responseMsg.textContent = "Failed to deactivate user.";
+    });
+  });
 });
