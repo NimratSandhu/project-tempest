@@ -1,9 +1,51 @@
 
 from flask import Blueprint, jsonify, request
 import datetime
-from app.models import Offer, Promo
+from app.models import Offer, Promo, User
 
 api_bp = Blueprint('api', __name__)
+
+@api_bp.route("/users", methods=["POST"])
+def create_user():
+    data = request.json
+    try:
+        username = data.get("username")
+        country = data.get("country")
+        state = data.get("state")
+        active_status = data.get("active", True)
+
+        if not username or not country or not state:
+            return jsonify({"Error": "username, country, and state are required."}), 400
+
+        user = User(
+            username=username,
+            active=active_status,
+            country=country,
+            state=state
+        )
+        user.save()
+        return jsonify({
+            "Message": f"User '{user.username}' created successfully.",
+            "user_id": str(user.id)
+        }), 201
+    except Exception as e:
+        return jsonify({"Error": f"Failed to create user: {str(e)}"}), 400
+
+
+@api_bp.route("/deactivate_user", methods=["POST"])
+def deactivate_user():
+    data = request.json
+    user_id = data.get("id")
+    if not user_id:
+        return jsonify({"Error": "User ID is required."}), 400
+
+    try:
+        user = User.objects.get(id=user_id)
+        user.active = False
+        user.save()
+        return jsonify({"Message": f"User '{user.username}' has been deactivated."}), 200
+    except Exception as e:
+        return jsonify({"Error": f"Failed to deactivate user: {str(e)}"}), 400
 
 
 @api_bp.route("/offers", methods=["POST"])

@@ -113,6 +113,50 @@
       <button type="button" id="cancelDeactivatePromoBtn" class="btn btn-secondary ms-2">Cancel</button>
     </form>
   </div>
+
+  <!-- Add User -->
+  <div class="d-flex justify-content-center mb-4">
+    <button id="openUserFormBtn" class="btn btn-info btn-lg">+ Add New User</button>
+  </div>
+  <div id="userForm" class="card shadow p-4 d-none">
+    <h4 class="mb-3">Create a New User</h4>
+    <form id="addUserForm">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" required>
+      </div>
+      <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+        <input type="text" class="form-control" id="country" required>
+      </div>
+      <div class="mb-3">
+        <label for="state" class="form-label">State</label>
+        <input type="text" class="form-control" id="state" required>
+      </div>
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="user_active" checked>
+        <label class="form-check-label" for="user_active">Active</label>
+      </div>
+      <button type="submit" class="btn btn-success">Submit</button>
+      <button type="button" id="cancelUserBtn" class="btn btn-secondary ms-2">Cancel</button>
+    </form>
+  </div>
+
+  <!-- Deactivate User -->
+  <div class="d-flex justify-content-center mb-4">
+    <button id="deactivateUserBtn" class="btn btn-danger btn-lg">Deactivate User</button>
+  </div>
+  <div id="deactivateUserForm" class="card shadow p-4 d-none">
+    <h4 class="mb-3">Deactivate a User</h4>
+    <form id="deactivateUserFormElem">
+      <div class="mb-3">
+        <label for="deactivate_user_id" class="form-label">User ID</label>
+        <input type="text" class="form-control" id="deactivate_user_id" required>
+      </div>
+      <button type="submit" class="btn btn-danger">Deactivate</button>
+      <button type="button" id="cancelDeactivateUserBtn" class="btn btn-secondary ms-2">Cancel</button>
+    </form>
+  </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
