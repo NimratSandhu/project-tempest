@@ -1,14 +1,28 @@
-import React from 'react';
-import Navbar from './Navbar';
+import React, { useEffect, useState } from 'react';
+import Navbar from './components/Navbar';
+import OfferCard from './components/OfferCard';
 import './App.css';
 
 function App() {
+  const [offers, setOffers] = useState([]);
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:5000/offers')
+      .then((response) => response.json())
+      .then((data) => setOffers(data))
+      .catch((error) => console.error('Error fetching offers:', error));
+  }, []);
+
   return (
     <div className="App">
       <Navbar />
-      <main>
-        <h1>Welcome to My React App</h1>
-        <p>This is a simple React  with a navigation bar.</p>
+      <main className="main-content">
+        <h1>Available Offers</h1>
+        <div className="offers-container">
+          {offers.map((offer) => (
+            <OfferCard key={offer.id} offer={offer} />
+          ))}
+        </div>
       </main>
     </div>
   );
