@@ -3,9 +3,11 @@ from app.config import Config
 from mongoengine import connect
 from .routes.main import main_bp
 from .routes.api import api_bp
+from flask_cors import CORS
 
 def create_app(config_name='default'):
     app = Flask(__name__)
+    CORS(app)
     app.config.from_object(Config)
     connect(**app.config["MONGODB_SETTINGS"])
 
